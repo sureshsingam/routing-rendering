@@ -1,12 +1,15 @@
-//if user tries to access this page from another route.
 
+"use client";
+import { use } from "react";
 import { DUMMY_NEWS } from "@/dummy-news";
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 
-export default async function InterceptedImagePage({ params }) {
+export default function InterceptedImagePage({ params }) {
+    const router = useRouter();
 
-    const { newsid } = await params;
+
+    const { newsid } = use(params);
     const newsItem = DUMMY_NEWS.find(newsItem => newsItem.newsid === newsid);
 
     if (!newsItem) {
@@ -14,7 +17,7 @@ export default async function InterceptedImagePage({ params }) {
     }
     return (
         <>
-            <div className="modal-backdrop" />
+            <div className="modal-backdrop" onClick={router.back} />
 
             <dialog className="modal" open>
                 <div className="fullscreen-image">
