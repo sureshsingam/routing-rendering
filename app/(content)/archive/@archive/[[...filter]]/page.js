@@ -8,6 +8,11 @@ async function FilterHeader({ year, month }) {
     const availableYears = await getAvailableNewsYears();
     let links = availableYears;
 
+    if (year && !availableYears.includes(year) ||
+        (month && !getAvailableNewsMonths(year).includes(month))) {
+        throw new Error("Invalid filter");
+    }
+
     if (year && !month) {
         links = getAvailableNewsMonths(year);
     }
@@ -66,15 +71,6 @@ export default async function FilteredNewsPage({ params }) {
 
     // filter is a catch all route parameter and will be an array of segments
     console.log("Filter:", filter);
-    const availableYears = await getAvailableNewsYears();
-
-    //get all news for the given year
-    //const news_in_given_year = getNewsForYear(year);
-    if (selectedYear && !availableYears.includes(selectedYear) ||
-        (selectedMonth && !getAvailableNewsMonths(selectedYear).includes(selectedMonth))) {
-        throw new Error("Invalid filter");
-    }
-
 
     return (
         <>
